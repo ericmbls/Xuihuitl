@@ -4,183 +4,242 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-content {
-  background: white;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
+  background: #fff;
+  border-radius: 20px;
+  width: 95%;
+  max-width: 900px;
+  /* Más ancho para dos columnas */
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border-bottom: 1px solid #e0e0e0;
+  flex-direction: column;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 40px;
+  position: relative;
 }
 
-.modal-header h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-  color: #1a1a1a;
-}
-
-.modal-close {
+/* El botón de cerrar flota arriba a la derecha fuera del flujo o en la esquina */
+.modal-close-btn {
+  position: absolute;
+  top: 25px;
+  right: 25px;
   background: none;
   border: none;
-  font-size: 24px;
   cursor: pointer;
-  color: #999;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #a0a0a0;
+  transition: color 0.2s;
+  z-index: 10;
 }
 
-.modal-close:hover {
-  color: #1a1a1a;
+.modal-close-btn:hover {
+  color: #333;
 }
 
 .modal-body {
-  padding: 20px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  /* Columna Izquierda Fija, Derecha Flexible */
+  gap: 40px;
 }
 
-.upload-section {
-  margin-bottom: 30px;
+/* COLUMNA IZQUIERDA: IMAGEN */
+.left-column {
+  display: flex;
+  flex-direction: column;
 }
 
-.image-upload {
+.image-upload-area {
+  background-color: #f3f4f6;
+  border-radius: 16px;
+  height: 300px;
+  /* Cuadrado/Rectangular vertical */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-  padding: 40px;
+  color: #888;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: #f9f9f9;
+  transition: all 0.2s ease;
+  border: 2px dashed transparent;
 }
 
-.image-upload:hover {
-  border-color: #8B6F47;
-  background: #f5f1ed;
+.image-upload-area:hover {
+  background-color: #eef0f2;
+  border-color: #ccc;
 }
 
-.image-upload span {
-  font-size: 48px;
-  margin-bottom: 10px;
+.upload-icon {
+  color: #9ca3af;
+  margin-bottom: 12px;
 }
 
-.image-upload p {
-  color: #666;
-  margin: 0;
+.upload-text {
   font-size: 14px;
+  color: #6b7280;
   font-weight: 500;
 }
 
+
+/* COLUMNA DERECHA: FORMULARIO */
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+h2 {
+  font-family: 'Outfit', sans-serif;
+  /* Asumiendo fuente del proyecto */
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 10px 0;
+}
+
 .form-group {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  /* Gris oscuro */
+  margin-bottom: 4px;
+}
+
+/* Inputs estilo "Flushed" (Solo línea inferior) */
+.input-flushed {
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 0;
+  font-size: 15px;
+  color: #111;
+  background: transparent;
+  transition: border-color 0.2s;
+  border-radius: 0;
+}
+
+.input-flushed:focus {
+  outline: none;
+  border-bottom-color: #8B6F47;
+  /* Color acento marrón */
+}
+
+.input-flushed::placeholder {
+  color: #d1d5db;
+}
+
+/* Select custom arrow */
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #9ca3af;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
 }
 
-.form-group label {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
+.textarea-bordered {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
+  padding: 12px;
   font-size: 14px;
-  font-family: inherit;
-  color: #1a1a1a;
-  transition: all 0.3s ease;
+  resize: none;
+  min-height: 100px;
+  margin-top: 8px;
+  transition: border-color 0.2s;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.textarea-bordered:focus {
   outline: none;
   border-color: #8B6F47;
-  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: #999;
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.modal-footer {
-  padding: 20px;
-  border-top: 1px solid #e0e0e0;
+/* Footer / Botones */
+.modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  margin-top: 20px;
 }
 
-.btn-guardar {
-  background: #8B6F47;
+.btn-save {
+  background-color: #8d6e48;
+  /* Marrón del diseño */
   color: white;
-  border: none;
-  padding: 10px 30px;
+  padding: 10px 32px;
   border-radius: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s;
 }
 
-.btn-guardar:hover {
-  background: #734d2f;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.btn-save:hover {
+  background-color: #755938;
 }
 
-@media (max-width: 600px) {
-  .modal-content {
-    width: 95%;
-  }
-
-  .form-row {
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-body {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .image-upload {
-    padding: 20px;
-  }
-
-  .image-upload span {
-    font-size: 36px;
+  .image-upload-area {
+    height: 200px;
   }
 }

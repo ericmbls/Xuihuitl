@@ -98,19 +98,48 @@
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50px;
+  transition: background-color 0.2s;
 }
 
-.user-profile img {
+.user-profile:hover {
+  background-color: #ededed;
+}
+
+.user-avatar {
   width: 36px;
   height: 36px;
+  background-color: #8B6F47;
+  color: white;
   border-radius: 50%;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.user-profile span {
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
   font-size: 13px;
-  color: var(--muted-text);
-  font-weight: 500;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.2;
+}
+
+.user-role {
+  font-size: 11px;
+  color: #888;
+}
+
+.user-settings-icon {
+  color: #999;
+  margin-left: 4px;
 }
 
 /* Responsive adjustments */

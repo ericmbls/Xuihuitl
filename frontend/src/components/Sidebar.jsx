@@ -52,8 +52,14 @@ export default function Sidebar({ onNavigate, currentPage }) {
 
       <div className="sidebar-footer">
         <div className="user-profile">
-          <img src="https://via.placeholder.com/40" alt="Usuario" />
-          <span>Usuario1</span>
+          <div className="user-avatar">
+            <span>U1</span>
+          </div>
+          <div className="user-info">
+            <span className="user-name">Usuario1</span>
+            <span className="user-role">Admin</span>
+          </div>
+          <Settings size={18} className="user-settings-icon" />
         </div>
       </div>
     </aside>

@@ -1,10 +1,10 @@
+/* Layout general */
 .dashboard-layout {
   display: flex;
-  flex-direction: column;
   height: 100vh;
-  background: var(--bg);
+  background: #fdfaf6;
   font-family: 'Inter', sans-serif;
-  /* Ensuring a clean font if available */
+  overflow: hidden;
 }
 
 .dashboard-main {
@@ -12,108 +12,352 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #fdfdfd;
-  /* Subtle brightness lift */
+  background: #fdfaf6;
 }
 
 .dashboard-content {
   flex: 1;
-  overflow-y: auto;
-  padding: 40px;
-  /* Increased padding */
-}
-
-/* Sección de Métricas */
-.metrics-section {
-  margin-bottom: 48px;
-}
-
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 24px;
-  /* Increased gap */
+  padding: 30px;
+  overflow-y: auto;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-/* Sección de Surcos */
-.surcos-section {
-  margin-bottom: 48px;
+/* 1. KPIs Section */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
 }
 
-.surcos-section h2,
-.cultivos-section h2 {
-  font-size: 20px;
-  /* Larger title */
+.kpi-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  /* Sombra suave */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #f3e8dc;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.kpi-icon {
+  color: #8B6F47;
+  padding: 8px;
+  background: #f9f4ef;
+  border-radius: 8px;
+}
+
+.kpi-value {
+  font-size: 32px;
   font-weight: 700;
-  color: var(--primary-600);
-  margin: 0 0 24px 0;
-  letter-spacing: -0.02em;
-  /* Tighter tracking for modern look */
+  color: #1f2937;
+}
+
+.kpi-sub {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  align-self: flex-start;
+  font-weight: 500;
+}
+
+.kpi-sub.neutral {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.kpi-sub.success {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.kpi-sub.danger {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+
+/* 2. Middle Section: Heatmap & Forecast */
+.middle-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.heatmap-card,
+.forecast-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f3e8dc;
+}
+
+.heatmap-card h3,
+.forecast-card h3,
+.chart-header h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Heatmap Grid */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.heatmap-zone {
+  background: #e6e9ea;
+  border-radius: 12px;
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.heatmap-zone.zone-ok {
+  background-color: #dbece2;
+  /* Verde suave */
+  color: #3b6e56;
+}
+
+.heatmap-zone.zone-alert {
+  background-color: #fed7d7;
+  /* Rojo suave */
+  color: #c53030;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* Forecast List */
+.forecast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.forecast-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fffbf5;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
 }
 
-.surcos-section h2::before,
-.cultivos-section h2::before {
-  content: '';
+.forecast-item:hover {
+  border-color: #e5e7eb;
+}
+
+.forecast-item span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.forecast-temp {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+
+/* 3. Zones Section */
+.zones-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.zone-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #f3e8dc;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s;
+}
+
+.zone-card:hover {
+  transform: translateY(-2px);
+}
+
+.zone-alert-border {
+  border-color: #fc8181;
+  background: #fff5f5;
+}
+
+.zone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.zone-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.zone-location {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
   display: block;
-  width: 4px;
+}
+
+.check-icon {
+  color: #10b981;
+  font-weight: bold;
+  background: #ecfdf5;
+  width: 24px;
   height: 24px;
-  background: var(--primary);
-  border-radius: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
 }
 
-.surcos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+.alert-icon-red {
+  color: #ef4444;
 }
 
-/* Sección de Cultivos */
-.cultivos-section {
-  margin-bottom: 40px;
+.zone-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.cultivos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 24px;
+.z-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #6b7280;
+  background: #f9fafb;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
-/* Responsive */
+.z-metric strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+
+/* 4. Chart Section */
+.chart-section {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f3e8dc;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.chart-value-big {
+  text-align: right;
+  font-size: 28px;
+  font-weight: 700;
+  color: #8B6F47;
+  line-height: 1.2;
+}
+
+.chart-value-big span {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.chart-container {
+  width: 100%;
+  height: 240px;
+}
+
+.caudal-chart {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+
 @media (max-width: 1024px) {
-  .metrics-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .middle-section {
+    grid-template-columns: 1fr;
   }
 
-  .surcos-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .cultivos-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .heatmap-grid {
+    grid-template-columns: repeat(4, 1fr);
+    /* Mantener si cabe, o bajar a 2 */
   }
 }
 
-@media (max-width: 768px) {
-  .dashboard-layout {
-    flex-direction: column;
+@media (max-width: 600px) {
+  .heatmap-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .dashboard-content {
-    padding: 24px;
+    padding: 16px;
   }
 
-  .metrics-grid {
+  .kpi-grid {
     grid-template-columns: 1fr;
-  }
-
-  .surcos-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cultivos-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }

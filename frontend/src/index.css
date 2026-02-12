@@ -21,6 +21,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -69,9 +70,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -82,10 +85,42 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Global Dashboard Layout Fixes */
+.dashboard-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  /* Force vertical stacking for Top Navbar */
+  height: 100vh;
+  width: 100vw;
+  background-color: #fcfbf9;
+  /* Cream background from design */
+  overflow: hidden;
+}
+
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.dashboard-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
 }

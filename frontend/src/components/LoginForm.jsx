@@ -71,17 +71,42 @@ export default function LoginForm({ onLogin }) {
     setErrors(prev => ({ ...prev, [name]: validationErrors[name] }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate(formData);
-    setErrors(validationErrors);
-    setTouched({ email: true, password: true, confirmPassword: true });
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (Object.keys(validationErrors).length === 0) {
-      // Proceed with login
-      onLogin();
+  const validationErrors = validate(formData);
+  setErrors(validationErrors);
+  setTouched({ email: true, password: true, confirmPassword: true });
+
+  if (Object.keys(validationErrors).length === 0) {
+    try {
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Login exitoso:", data);
+        onLogin();
+      } else {
+        alert(data.message || "Error al iniciar sesión");
+      }
+
+    } catch (error) {
+      console.error("Error de conexión:", error);
+      alert("No se pudo conectar con el servidor");
     }
-  };
+  }
+};
+
 
   const handleSocialLogin = (provider) => {
     console.log(`Login with ${provider}`);

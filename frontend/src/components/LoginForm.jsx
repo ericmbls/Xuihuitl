@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Mail, Lock, AlertCircle, Facebook, Chrome, Eye, EyeOff } from 'lucide-react';
 import './LoginForm.css';
 
-export default function LoginForm({ onLogin }) {
+export default function LoginForm({ onLogin, mode = 'login' }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -12,6 +12,7 @@ export default function LoginForm({ onLogin }) {
   const [touched, setTouched] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
 
   const validate = (values) => {
     const newErrors = {};
@@ -23,24 +24,31 @@ export default function LoginForm({ onLogin }) {
       newErrors.email = 'Ingresa un correo electrónico válido (ej. usuario@dominio.com)';
     }
 
-    // Password validation
-    if (!values.password) {
-      newErrors.password = 'La contraseña es requerida';
-    } else {
-      if (values.password.length < 8 || values.password.length > 12) {
-        newErrors.password = 'La contraseña debe tener entre 8 y 12 caracteres';
+    if (mode === 'register') {
+      // Registration: stronger password rules
+      if (!values.password) {
+        newErrors.password = 'La contraseña es requerida';
+      } else {
+        if (values.password.length < 8 || values.password.length > 12) {
+          newErrors.password = 'La contraseña debe tener entre 8 y 12 caracteres';
+        }
+        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(values.password)) {
+          newErrors.password = 'Debe incluir mayúscula, minúscula, número y carácter especial (!@#$%^&*)';
+        }
+        if (values.email && values.password.toLowerCase().includes(values.email.split('@')[0].toLowerCase())) {
+          newErrors.password = 'La contraseña no puede contener partes del correo';
+        }
       }
-      if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(values.password)) {
-        newErrors.password = 'Debe incluir mayúscula, minúscula, número y carácter especial (!@#$%^&*)';
-      }
-      if (values.email && values.password.toLowerCase().includes(values.email.split('@')[0].toLowerCase())) {
-        newErrors.password = 'La contraseña no puede contener partes del correo';
-      }
-    }
 
-    // Confirm Password validation
-    if (values.confirmPassword !== values.password) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
+      // Confirm Password validation
+      if (values.confirmPassword !== values.password) {
+        newErrors.confirmPassword = 'Las contraseñas no coinciden';
+      }
+    } else {
+      // Login: only require password non-empty
+      if (!values.password) {
+        newErrors.password = 'La contraseña es requerida';
+      }
     }
 
     return newErrors;
@@ -71,41 +79,52 @@ export default function LoginForm({ onLogin }) {
     setErrors(prev => ({ ...prev, [name]: validationErrors[name] }));
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const validationErrors = validate(formData);
-  setErrors(validationErrors);
-  setTouched({ email: true, password: true, confirmPassword: true });
+    const validationErrors = validate(formData);
+    setErrors(validationErrors);
+    setTouched({ email: true, password: true, confirmPassword: true });
 
-  if (Object.keys(validationErrors).length === 0) {
-    try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        })
-      });
+    if (Object.keys(validationErrors).length === 0) {
+      // Front-only auth using localStorage
+      const usersRaw = localStorage.getItem('users') || '[]';
+      let users = [];
+      try { users = JSON.parse(usersRaw); } catch (err) { users = []; }
 
-      const data = await response.json();
+      if (mode === 'register') {
+        const exists = users.find(u => u.email === formData.email);
+        if (exists) {
+          alert('Ya existe un usuario con ese correo. Inicia sesión.');
+          return;
+        }
 
-      if (response.ok) {
-        console.log("Login exitoso:", data);
+        // Save new user (store password as-is because this is demo front-only)
+        users.push({ email: formData.email, password: formData.password });
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // create fake token and save
+        const token = btoa(`${formData.email}:${Date.now()}`);
+        if (remember) localStorage.setItem('authToken', token);
+        else sessionStorage.setItem('authToken', token);
+
         onLogin();
-      } else {
-        alert(data.message || "Error al iniciar sesión");
+        return;
       }
 
-    } catch (error) {
-      console.error("Error de conexión:", error);
-      alert("No se pudo conectar con el servidor");
+      // mode === 'login'
+      const user = users.find(u => u.email === formData.email && u.password === formData.password);
+      if (user) {
+        const token = btoa(`${formData.email}:${Date.now()}`);
+        if (remember) localStorage.setItem('authToken', token);
+        else sessionStorage.setItem('authToken', token);
+
+        onLogin();
+      } else {
+        alert('Credenciales inválidas. Verifica el correo y la contraseña o regístrate.');
+      }
     }
-  }
-};
+  };
 
 
   const handleSocialLogin = (provider) => {
@@ -115,8 +134,8 @@ export default function LoginForm({ onLogin }) {
   return (
     <div className="login-form-container">
       <div className="login-header">
-        <h1 className="form-title">Bienvenido de nuevo</h1>
-        <p className="form-subtitle">Ingresa tus credenciales para acceder</p>
+        <h1 className="form-title">{mode === 'login' ? 'Bienvenido de nuevo' : 'Crea tu cuenta'}</h1>
+        <p className="form-subtitle">{mode === 'login' ? 'Ingresa tus credenciales para acceder' : 'Rellena los datos para registrarte'}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="login-form" noValidate>
@@ -167,9 +186,11 @@ export default function LoginForm({ onLogin }) {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-          <p className="password-hint">
-            Mínimo 8-12 caracteres, mayúscula, minúscula, número y símbolo.
-          </p>
+          {mode === 'register' && (
+            <p className="password-hint">
+              Mínimo 8-12 caracteres, mayúscula, minúscula, número y símbolo.
+            </p>
+          )}
           {errors.password && touched.password && (
             <span className="error-message">
               <AlertCircle size={14} /> {errors.password}
@@ -177,46 +198,52 @@ export default function LoginForm({ onLogin }) {
           )}
         </div>
 
-        {/* Confirm Password Field */}
-        <div className={`form-group ${errors.confirmPassword && touched.confirmPassword ? 'has-error' : ''}`}>
-          <label htmlFor="confirmPassword">Confirmar Contraseña</label>
-          <div className="input-wrapper">
-            <Lock className="input-icon left" size={20} />
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder="Repite tu contraseña"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="form-input has-icon-left has-icon-right"
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+        {/* Confirm Password Field (only for register) */}
+        {mode === 'register' && (
+          <div className={`form-group ${errors.confirmPassword && touched.confirmPassword ? 'has-error' : ''}`}>
+            <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+            <div className="input-wrapper">
+              <Lock className="input-icon left" size={20} />
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Repite tu contraseña"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="form-input has-icon-left has-icon-right"
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+            {errors.confirmPassword && touched.confirmPassword && (
+              <span className="error-message">
+                <AlertCircle size={14} /> {errors.confirmPassword}
+              </span>
+            )}
           </div>
-          {errors.confirmPassword && touched.confirmPassword && (
-            <span className="error-message">
-              <AlertCircle size={14} /> {errors.confirmPassword}
-            </span>
-          )}
-        </div>
+        )}
 
         <div className="form-options">
           <label className="remember-me">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+            />
             <span>Recordarme</span>
           </label>
           <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
         </div>
 
         <button type="submit" className="login-button">
-          Iniciar Sesión
+          {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
         </button>
 
         <div className="divider">

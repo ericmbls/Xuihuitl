@@ -1,16 +1,15 @@
 .login-form-container {
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  /* Reduced gap */
+  gap: 14px;
+  /* compact spacing */
 }
 
 .login-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  /* Reduced margin */
+  text-align: left;
+  margin-bottom: 0.6rem;
 }
 
 /* Removed logo styles as logo is removed from header */
@@ -90,7 +89,7 @@
   outline: none;
   border-color: #8B6F47;
   background: white;
-  box-shadow: 0 0 0 4px rgba(139, 111, 71, 0.1);
+  box-shadow: 0 8px 22px rgba(139,111,71,0.08);
 }
 
 /* Password Toggle Button */
@@ -165,20 +164,21 @@
 
 .login-button {
   width: 100%;
-  padding: 12px;
-  background: #8B6F47;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, #b0895a 0%, #8B6F47 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 5px;
+  transition: transform 0.08s ease, box-shadow 0.12s ease;
+  margin-top: 6px;
+  box-shadow: 0 10px 26px rgba(139,111,71,0.14);
 }
 
-.login-button:hover {
-  background: #6f5636;
+.login-button:active {
+  transform: translateY(1px);
 }
 
 /* Divider */

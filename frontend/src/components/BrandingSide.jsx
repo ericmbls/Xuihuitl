@@ -6,12 +6,10 @@ export default function BrandingSide() {
     <div className="branding-side">
       <div className="branding-content">
         <div className="flower-logo">
-          <img src={logo} alt="Xihuitl Logo" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+          <img src={logo} alt="Xihuitl Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
 
         <h1 className="brand-name">Xihuitl</h1>
-
-        <button className="register-btn">Registrarse</button>
       </div>
     </div>
   );

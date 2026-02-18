@@ -4,6 +4,7 @@ import './LoginForm.css';
 
 export default function LoginForm({ onLogin, mode = 'login' }) {
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -16,16 +17,12 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
 
   const validate = (values) => {
     const newErrors = {};
-
-    // Email validation
     if (!values.email) {
       newErrors.email = 'El correo electrónico es requerido';
     } else if (!/\S+@\S+\.\S+/.test(values.email)) {
       newErrors.email = 'Ingresa un correo electrónico válido (ej. usuario@dominio.com)';
     }
-
     if (mode === 'register') {
-      // Registration: stronger password rules
       if (!values.password) {
         newErrors.password = 'La contraseña es requerida';
       } else {
@@ -39,33 +36,25 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
           newErrors.password = 'La contraseña no puede contener partes del correo';
         }
       }
-
-      // Confirm Password validation
       if (values.confirmPassword !== values.password) {
         newErrors.confirmPassword = 'Las contraseñas no coinciden';
       }
     } else {
-      // Login: only require password non-empty
       if (!values.password) {
         newErrors.password = 'La contraseña es requerida';
       }
     }
-
     return newErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     let finalValue = value;
-
-    // Email Sanitization (Frontend)
     if (name === 'email') {
       finalValue = value.trim().toLowerCase();
     }
-
     const newValues = { ...formData, [name]: finalValue };
     setFormData(newValues);
-
     if (touched[name]) {
       const fieldError = validate(newValues)[name];
       setErrors(prev => ({ ...prev, [name]: fieldError }));
@@ -79,53 +68,33 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
     setErrors(prev => ({ ...prev, [name]: validationErrors[name] }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const validationErrors = validate(formData);
     setErrors(validationErrors);
     setTouched({ email: true, password: true, confirmPassword: true });
-
     if (Object.keys(validationErrors).length === 0) {
-      // Front-only auth using localStorage
-      const usersRaw = localStorage.getItem('users') || '[]';
-      let users = [];
-      try { users = JSON.parse(usersRaw); } catch (err) { users = []; }
-
-      if (mode === 'register') {
-        const exists = users.find(u => u.email === formData.email);
-        if (exists) {
-          alert('Ya existe un usuario con ese correo. Inicia sesión.');
-          return;
-        }
-
-        // Save new user (store password as-is because this is demo front-only)
-        users.push({ email: formData.email, password: formData.password });
-        localStorage.setItem('users', JSON.stringify(users));
-
-        // create fake token and save
-        const token = btoa(`${formData.email}:${Date.now()}`);
+      const endpoint = mode === 'login' ? '/auth/login' : '/auth/register';
+      const body = mode === 'login'
+        ? { email: formData.email, password: formData.password }
+        : { name: formData.name, email: formData.email, password: formData.password };
+      try {
+        const res = await fetch(`http://localhost:3000${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) throw new Error('Error en autenticación');
+        const data = await res.json();
+        const token = data.access_token || btoa(`${formData.email}:${Date.now()}`);
         if (remember) localStorage.setItem('authToken', token);
         else sessionStorage.setItem('authToken', token);
-
         onLogin();
-        return;
-      }
-
-      // mode === 'login'
-      const user = users.find(u => u.email === formData.email && u.password === formData.password);
-      if (user) {
-        const token = btoa(`${formData.email}:${Date.now()}`);
-        if (remember) localStorage.setItem('authToken', token);
-        else sessionStorage.setItem('authToken', token);
-
-        onLogin();
-      } else {
-        alert('Credenciales inválidas. Verifica el correo y la contraseña o regístrate.');
+      } catch (err) {
+        alert(err.message);
       }
     }
   };
-
 
   const handleSocialLogin = (provider) => {
     console.log(`Login with ${provider}`);
@@ -137,9 +106,7 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
         <h1 className="form-title">{mode === 'login' ? 'Bienvenido de nuevo' : 'Crea tu cuenta'}</h1>
         <p className="form-subtitle">{mode === 'login' ? 'Ingresa tus credenciales para acceder' : 'Rellena los datos para registrarte'}</p>
       </div>
-
       <form onSubmit={handleSubmit} className="login-form" noValidate>
-        {/* Email Field */}
         <div className={`form-group ${errors.email && touched.email ? 'has-error' : ''}`}>
           <label htmlFor="email">Correo Electrónico</label>
           <div className="input-wrapper">
@@ -161,8 +128,6 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
             </span>
           )}
         </div>
-
-        {/* Password Field */}
         <div className={`form-group ${errors.password && touched.password ? 'has-error' : ''}`}>
           <label htmlFor="password">Contraseña</label>
           <div className="input-wrapper">
@@ -197,8 +162,6 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
             </span>
           )}
         </div>
-
-        {/* Confirm Password Field (only for register) */}
         {mode === 'register' && (
           <div className={`form-group ${errors.confirmPassword && touched.confirmPassword ? 'has-error' : ''}`}>
             <label htmlFor="confirmPassword">Confirmar Contraseña</label>
@@ -229,7 +192,6 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
             )}
           </div>
         )}
-
         <div className="form-options">
           <label className="remember-me">
             <input
@@ -241,15 +203,12 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
           </label>
           <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
         </div>
-
         <button type="submit" className="login-button">
           {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
         </button>
-
         <div className="divider">
           <span>O continuar con</span>
         </div>
-
         <div className="social-login-grid">
           <button
             type="button"

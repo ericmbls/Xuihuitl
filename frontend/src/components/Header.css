@@ -2,10 +2,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
-  background: var(--surface);
-  border-bottom: 1px solid rgba(15,23,42,0.04);
-  gap: 20px;
+  padding: 14px 20px;
+  background: white;
+  border-bottom: 1px solid rgba(15,23,42,0.06);
+  gap: 16px;
+}
+
+.header-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.2px;
+  margin: 0;
 }
 
 .header-search {
@@ -16,19 +24,20 @@
 
 .search-input {
   width: 100%;
-  padding: 10px 15px 10px 40px;
-  border: 1px solid #ddd;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 14px;
-  color: #666;
-  background: #f9f9f9;
-  transition: all 0.3s ease;
+  color: var(--text-secondary);
+  background: var(--surface-secondary);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary);
-  background: white;
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.08);
 }
 
 .search-input::placeholder {
@@ -49,21 +58,23 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 10px 16px;
   background: white;
-  border: 2px solid var(--primary);
-  border-radius: 8px;
+  border: 1.5px solid var(--primary);
+  border-radius: 10px;
   color: var(--primary);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
   cursor: pointer;
-  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-add-cultivo:hover {
   background: var(--primary);
   color: white;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.15);
 }
 
 .btn-add-cultivo span {
@@ -72,14 +83,22 @@
 }
 
 .btn-logout {
-  margin-left: 12px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(15,23,42,0.06);
+  margin-left: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
   background: transparent;
-  color: #374151;
+  color: var(--text-secondary);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-logout:hover { background: rgba(15,23,42,0.04); }
+.btn-logout:hover {
+  background: rgba(139, 111, 71, 0.08);
+  color: var(--primary);
+  border-color: rgba(139, 111, 71, 0.16);
+  box-shadow: 0 2px 8px rgba(139, 111, 71, 0.08);
+}

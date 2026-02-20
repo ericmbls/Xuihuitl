@@ -1,14 +1,35 @@
 :root {
+  /* Color Palette */
+  --primary: #8B6F47;
+  --primary-dark: #6F5940;
+  --text: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --surface: #ffffff;
+  --surface-secondary: #f9fafb;
+  --border: rgba(15,23,42,0.05);
+  --border-subtle: rgba(15,23,42,0.03);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 8px 24px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.08);
+
+  /* Other variables */
+  --muted: #f9fafb;
+  --muted-text: #6b7280;
+
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   line-height: 1.6;
   font-weight: 400;
-  letter-spacing: -0.5px;
 
   color-scheme: light;
-  color: #1a1a1a;
-  background-color: #ffffff;
+  color: var(--text);
+  background-color: #fafafa;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -32,7 +53,36 @@ body {
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  background: #fafafa;
 }
+
+/* App shell layout: sidebar left, content right */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* compact sidebar width */
+.app-shell .sidebar {
+  width: 88px;
+  flex: 0 0 88px;
+}
+
+.app-content {
+  flex: 1 1 auto;
+  background: #fff;
+  min-height: 100vh;
+  display: block;
+}
+
+/* when sidebar is fixed, shift content to the right */
+.app-content { margin-left: 88px; transition: margin-left 180ms ease; }
+
+/* when sidebar is hovered it expands, but we keep content static to avoid layout shift */
+
+/* Ensure existing page main area sits correctly */
+.dashboard-layout { padding: 0; }
+.dashboard-main { padding: 24px; }
 
 #root {
   width: 100%;

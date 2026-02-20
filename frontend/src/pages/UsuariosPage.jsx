@@ -3,7 +3,6 @@ import {
   Trash2, Mail, Users, Ticket, UserCheck, Search, Plus,
   Shield, Edit3, MoreVertical, Lock, Unlock
 } from 'lucide-react';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import './UsuariosPage.css';
 
@@ -39,7 +38,6 @@ export default function UsuariosPage({ onNavigate, currentPage, onLogout }) {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
       <div className="dashboard-main">
         <Header onAddCultivo={() => { }} title="Usuarios" onLogout={onLogout} />
 

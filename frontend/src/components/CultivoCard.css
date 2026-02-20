@@ -2,13 +2,14 @@
   background: var(--surface);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: var(--card-shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
   cursor: pointer;
+  border: 1px solid var(--border-subtle);
 }
 
 .cultivo-card:hover {
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-4px);
 }
 

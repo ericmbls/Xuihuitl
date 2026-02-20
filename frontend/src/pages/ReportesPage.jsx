@@ -3,7 +3,6 @@ import {
   FileText, Calendar, Filter, Download, Share2, MoreHorizontal,
   Droplets, DollarSign, TrendingUp, CheckCircle, Clock
 } from 'lucide-react';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import './ReportesPage.css';
 
@@ -35,7 +34,6 @@ export default function ReportesPage({ onNavigate, currentPage, onLogout }) {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
       <div className="dashboard-main">
         <Header onAddCultivo={() => { }} title="Reportes" onLogout={onLogout} />
 

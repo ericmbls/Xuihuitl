@@ -1,10 +1,33 @@
-import { LayoutDashboard, Sprout, BarChart3, Users, Settings } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { LayoutDashboard, Sprout, BarChart3, Users, Settings, ChevronsLeft } from 'lucide-react';
 import logo from '../assets/logo.png';
 import './Sidebar.css';
 
 export default function Sidebar({ onNavigate, currentPage }) {
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    try {
+      const persisted = localStorage.getItem('sidebarExpanded');
+      if (persisted === 'true') setExpanded(true);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  const handleMouseEnter = () => {
+    setExpanded(true);
+    try { localStorage.setItem('sidebarExpanded', 'true'); } catch (e) {}
+  };
+
+  const handleCollapse = (e) => {
+    e.stopPropagation();
+    setExpanded(false);
+    try { localStorage.setItem('sidebarExpanded', 'false'); } catch (e) {}
+  };
+
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${expanded ? ' expanded' : ''}`} onMouseEnter={handleMouseEnter}>
       <div className="sidebar-header">
         <div className="logo">
           <img src={logo} alt="Xihuitl" style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }} />
@@ -59,7 +82,9 @@ export default function Sidebar({ onNavigate, currentPage }) {
             <span className="user-name">Usuario1</span>
             <span className="user-role">Admin</span>
           </div>
-          <Settings size={18} className="user-settings-icon" />
+          <button className="collapse-btn" onClick={handleCollapse} title="Contraer">
+            <ChevronsLeft size={16} />
+          </button>
         </div>
       </div>
     </aside>

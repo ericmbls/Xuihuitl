@@ -6,6 +6,7 @@ import ReportesPage from './pages/ReportesPage';
 import UsuariosPage from './pages/UsuariosPage';
 import AjustesPage from './pages/AjustesPage';
 import { NotificationProvider, useNotification } from './components/NotificationProvider';
+import Sidebar from './components/Sidebar';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,13 +29,16 @@ function AppContent() {
   }
 
   return (
-    <>
-      {currentPage === 'dashboard' && <DashboardPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
-      {currentPage === 'cultivos' && <CultivosPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
-      {currentPage === 'reportes' && <ReportesPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
-      {currentPage === 'usuarios' && <UsuariosPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
-      {currentPage === 'ajustes' && <AjustesPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
-    </>
+    <div className="app-shell">
+      <Sidebar onNavigate={handleNavigate} currentPage={currentPage} />
+      <main className="app-content">
+        {currentPage === 'dashboard' && <DashboardPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
+        {currentPage === 'cultivos' && <CultivosPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
+        {currentPage === 'reportes' && <ReportesPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
+        {currentPage === 'usuarios' && <UsuariosPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
+        {currentPage === 'ajustes' && <AjustesPage onNavigate={handleNavigate} currentPage={currentPage} onLogout={handleLogout} />}
+      </main>
+    </div>
   );
 }
 

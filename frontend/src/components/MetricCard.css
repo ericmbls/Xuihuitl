@@ -1,21 +1,19 @@
 .metric-card {
   background: var(--surface);
   padding: 24px;
-  border-radius: 16px;
-  /* Softer radius */
+  border-radius: 14px;
   display: flex;
   align-items: center;
   gap: 20px;
-  box-shadow: var(--card-shadow);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  /* Subtle border definition */
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+  border: 1px solid var(--border-subtle);
 }
 
 .metric-card:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-4px);
-  border-color: rgba(0, 0, 0, 0.06);
+  border-color: var(--border);
 }
 
 .metric-icon {
@@ -26,12 +24,8 @@
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  background: var(--surface-hover);
-  /* Assuming this exists, or use a pseudo-element for opacity */
+  background: rgba(139, 111, 71, 0.08);
   border-radius: 50%;
-  /* Circle icon background */
-  background-color: rgba(0, 0, 0, 0.03);
-  /* Fallback subtle bg overlay */
 }
 
 .metric-icon svg {

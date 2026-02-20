@@ -3,7 +3,6 @@ import {
   Sprout, AlertCircle, Download, Activity,
   Droplets, Thermometer, Wind, CloudSun, CloudRain, Sun
 } from 'lucide-react';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import AddCultivoModal from '../components/AddCultivoModal';
 import './DashboardPage.css';
@@ -42,7 +41,6 @@ export default function DashboardPage({ onNavigate, currentPage, onLogout }) {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
       <div className="dashboard-main">
         <Header onAddCultivo={() => setShowAddModal(true)} title="Dashboard" onLogout={onLogout} />
 

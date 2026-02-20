@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import EditCultivoModal from '../components/EditCultivoModal';
 import './CultivosPage.css';
@@ -120,7 +119,6 @@ export default function CultivosPage({ onNavigate, currentPage, onLogout }) {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
       <div className="dashboard-main">
         <Header onAddCultivo={() => {}} onLogout={onLogout} />
         <div className="cultivos-content">

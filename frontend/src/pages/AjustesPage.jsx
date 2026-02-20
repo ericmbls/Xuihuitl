@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Save, Globe, Smartphone, Bell, Shield, Sliders } from 'lucide-react';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import './AjustesPage.css';
 
@@ -18,9 +17,8 @@ export default function AjustesPage({ onNavigate, currentPage, onLogout }) {
 
     return (
         <div className="dashboard-layout">
-            <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
-            <div className="dashboard-main">
-                <Header onAddCultivo={() => { }} title="Ajustes" onLogout={onLogout} />
+                <div className="dashboard-main">
+                    <Header onAddCultivo={() => { }} title="Ajustes" onLogout={onLogout} />
 
                 <div className="dashboard-content">
                     {/* Header Row */}

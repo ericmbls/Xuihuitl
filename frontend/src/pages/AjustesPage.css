@@ -38,11 +38,11 @@
 }
 
 .settings-section {
-    background: #fffbf7;
-    /* Crema suave */
-    border-radius: 16px;
+    background: white;
+    border-radius: 14px;
     padding: 32px;
-    border: 1px solid #f3e8dc;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.06);
 }
 
 .section-header {
@@ -54,9 +54,10 @@
 
 .section-header h3 {
     font-size: 18px;
-    font-weight: 700;
-    color: #1f2937;
+    font-weight: 800;
+    color: #111827;
     margin: 0;
+    letter-spacing: -0.01em;
 }
 
 .section-header svg {

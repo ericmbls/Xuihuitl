@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNotification } from './NotificationProvider';
 import { Mail, Lock, AlertCircle, Facebook, Chrome, Eye, EyeOff } from 'lucide-react';
 import './LoginForm.css';
 
@@ -14,6 +15,7 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const { addToast } = useNotification();
 
   const validate = (values) => {
     const newErrors = {};
@@ -89,9 +91,10 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
         const token = data.access_token || btoa(`${formData.email}:${Date.now()}`);
         if (remember) localStorage.setItem('authToken', token);
         else sessionStorage.setItem('authToken', token);
-        onLogin();
+        onLogin(mode);
       } catch (err) {
-        alert(err.message);
+        const msg = err?.message || 'Error en autenticación';
+        addToast(msg, 'error');
       }
     }
   };

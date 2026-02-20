@@ -7,7 +7,7 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import './ReportesPage.css';
 
-export default function ReportesPage({ onNavigate, currentPage }) {
+export default function ReportesPage({ onNavigate, currentPage, onLogout }) {
   // KPIs
   const kpis = [
     { title: 'Producción total', value: '2,450 Kg', badge: '+18%', sub: 'Este mes', icon: <SproutIcon />, color: '#FEF9C3' },
@@ -37,7 +37,7 @@ export default function ReportesPage({ onNavigate, currentPage }) {
     <div className="dashboard-layout">
       <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
       <div className="dashboard-main">
-        <Header onAddCultivo={() => { }} title="Reportes" />
+        <Header onAddCultivo={() => { }} title="Reportes" onLogout={onLogout} />
 
         <div className="dashboard-content">
           {/* Header Section */}

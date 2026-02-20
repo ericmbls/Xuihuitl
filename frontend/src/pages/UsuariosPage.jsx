@@ -7,7 +7,7 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import './UsuariosPage.css';
 
-export default function UsuariosPage({ onNavigate, currentPage }) {
+export default function UsuariosPage({ onNavigate, currentPage, onLogout }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   // KPIs Data
@@ -41,7 +41,7 @@ export default function UsuariosPage({ onNavigate, currentPage }) {
     <div className="dashboard-layout">
       <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
       <div className="dashboard-main">
-        <Header onAddCultivo={() => { }} title="Usuarios" />
+        <Header onAddCultivo={() => { }} title="Usuarios" onLogout={onLogout} />
 
         <div className="dashboard-content">
           {/* Header Row */}

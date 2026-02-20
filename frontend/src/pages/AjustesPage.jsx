@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import './AjustesPage.css';
 
-export default function AjustesPage({ onNavigate, currentPage }) {
+export default function AjustesPage({ onNavigate, currentPage, onLogout }) {
     const [activeTab, setActiveTab] = useState('general');
     const [visualData, setVisualData] = useState({
         darkMode: false,
@@ -20,7 +20,7 @@ export default function AjustesPage({ onNavigate, currentPage }) {
         <div className="dashboard-layout">
             <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
             <div className="dashboard-main">
-                <Header onAddCultivo={() => { }} title="Ajustes" />
+                <Header onAddCultivo={() => { }} title="Ajustes" onLogout={onLogout} />
 
                 <div className="dashboard-content">
                     {/* Header Row */}

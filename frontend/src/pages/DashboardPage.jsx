@@ -8,7 +8,7 @@ import Header from '../components/Header';
 import AddCultivoModal from '../components/AddCultivoModal';
 import './DashboardPage.css';
 
-export default function DashboardPage({ onNavigate, currentPage }) {
+export default function DashboardPage({ onNavigate, currentPage, onLogout }) {
   const [showAddModal, setShowAddModal] = useState(false);
 
   // Mocks
@@ -44,7 +44,7 @@ export default function DashboardPage({ onNavigate, currentPage }) {
     <div className="dashboard-layout">
       <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
       <div className="dashboard-main">
-        <Header onAddCultivo={() => setShowAddModal(true)} title="Dashboard" />
+        <Header onAddCultivo={() => setShowAddModal(true)} title="Dashboard" onLogout={onLogout} />
 
         <div className="dashboard-content">
           {/* 1. KPIs */}

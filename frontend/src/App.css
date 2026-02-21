@@ -1,24 +1,15 @@
-:root {
-  --bg: #f7faf7;
-  /* off-white greenish */
-  --surface: #ffffff;
-  --muted: #eef6ef;
-  --primary: #2f855a;
-  /* green */
-  --primary-600: #276749;
-  --accent: #8B6F47;
-  /* warm accent */
-  --text: #17202a;
-  --muted-text: #6b7280;
-  --card-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+.app-layout {
+  display: flex;
 }
 
-/* Reset for full screen app */
-#root {
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  max-width: none;
-  text-align: left;
+.main-layout {
+  flex: 1;
+  padding: 40px;
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #fffaf8 0%,
+    #fbefe1 35%,
+    #f3e5ca 100%
+  );
 }

@@ -5,27 +5,54 @@ import CultivosPage from './pages/CultivosPage';
 import ReportesPage from './pages/ReportesPage';
 import UsuariosPage from './pages/UsuariosPage';
 import AjustesPage from './pages/AjustesPage';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import './App.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState('dashboard');
+  const [userRole] = useState('admin');
 
-  const handleNavigate = (page) => {
-    setCurrentPage(page);
+  const pages = {
+    dashboard: DashboardPage,
+    cultivos: CultivosPage,
+    reportes: ReportesPage,
+    usuarios: UsuariosPage,
+    ajustes: AjustesPage,
   };
+
+  const headerConfig = {
+    dashboard: { title: 'Dashboard', showButton: false },
+    cultivos: { title: 'Cultivos', showButton: true },
+    reportes: { title: 'Reportes', showButton: false },
+    usuarios: { title: 'Usuarios', showButton: false },
+    ajustes: { title: 'Ajustes', showButton: false },
+  };
+
+  const CurrentPageComponent = pages[currentPage];
+  const currentHeader = headerConfig[currentPage];
 
   if (!isLoggedIn) {
     return <LoginPage setIsLoggedIn={setIsLoggedIn} />;
   }
 
   return (
-    <>
-      {currentPage === 'dashboard' && <DashboardPage onNavigate={handleNavigate} currentPage={currentPage} />}
-      {currentPage === 'cultivos' && <CultivosPage onNavigate={handleNavigate} currentPage={currentPage} />}
-      {currentPage === 'reportes' && <ReportesPage onNavigate={handleNavigate} currentPage={currentPage} />}
-      {currentPage === 'usuarios' && <UsuariosPage onNavigate={handleNavigate} currentPage={currentPage} />}
-      {currentPage === 'ajustes' && <AjustesPage onNavigate={handleNavigate} currentPage={currentPage} />}
-    </>
+    <div className="app-layout">
+      <Sidebar
+        currentPage={currentPage}
+        onNavigate={setCurrentPage}
+        role={userRole}
+      />
+
+      <main className="main-layout">
+        <Header
+          title={currentHeader.title}
+          showButton={currentHeader.showButton}
+        />
+        <CurrentPageComponent />
+      </main>
+    </div>
   );
 }
 

@@ -1,50 +1,93 @@
-import { useState, useMemo } from 'react';
-import Header from '../components/Header';
-import EditCultivoModal from '../components/EditCultivoModal';
-import './CultivosPage.css';
+import { useState, useEffect, useMemo } from "react";
+import EditCultivoModal from "../components/EditCultivoModal";
+import AddCultivoModal from "../components/AddCultivoModal";
+import "./CultivosPage.css";
+import { getCultivos, createCultivo } from "../services/cultivos.service";
 
 export default function CultivosPage() {
+  const [cultivos, setCultivos] = useState([]);
   const [selectedCultivo, setSelectedCultivo] = useState(null);
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
-  const surcos = useMemo(() => ([
-    {
-      id: 1,
-      nombre: 'Surco A',
-      cultivos: [
-        {
-          id: 1,
-          name: 'Betabel',
-          image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=200&fit=crop',
-          source: 'Fuente A',
-        },
-        {
-          id: 2,
-          name: 'Zanahoria',
-          image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd64b11?w=300&h=200&fit=crop',
-          source: 'Fuente A',
-        },
-      ],
-    },
-    {
-      id: 2,
-      nombre: 'Surco B',
-      cultivos: [
-        {
-          id: 5,
-          name: 'Tomate',
-          image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=300&h=200&fit=crop',
-          source: 'Fuente B',
-        },
-      ],
-    },
-  ]), []);
+  // 🔥 Cargar cultivos
+  useEffect(() => {
+    const loadCultivos = async () => {
+      try {
+        const data = await getCultivos();
+        setCultivos(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error cargando cultivos:", err);
+        setCultivos([]);
+      }
+    };
 
-  const handleEditCultivo = (cultivo) => {
-    setSelectedCultivo(cultivo);
+    loadCultivos();
+  }, []);
+
+  // 🔥 Agrupar por ubicación
+  const surcos = useMemo(() => {
+    const grouped = {};
+
+    cultivos.forEach((cultivo) => {
+      const ubicacion = cultivo.ubicacion || "Sin ubicación";
+
+      if (!grouped[ubicacion]) {
+        grouped[ubicacion] = [];
+      }
+
+      grouped[ubicacion].push(cultivo);
+    });
+
+    return Object.entries(grouped).map(([ubicacion, lista], index) => ({
+      id: index + 1,
+      nombre: ubicacion,
+      cultivos: lista,
+    }));
+  }, [cultivos]);
+
+  // 🔥 Crear cultivo
+  const handleCreateCultivo = async (nuevoCultivo) => {
+    try {
+      const creado = await createCultivo(nuevoCultivo);
+      setCultivos((prev) => [...prev, creado]);
+      setIsAddOpen(false);
+    } catch (error) {
+      console.error("Error creando cultivo:", error);
+    }
+  };
+
+  // 🔥 Actualizar cultivo
+  const handleUpdateCultivo = async (id, updatedData) => {
+    try {
+      const res = await fetch(`http://localhost:3000/cultivos/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
+      });
+
+      const data = await res.json();
+
+      setCultivos((prev) =>
+        prev.map((c) => (c.id === id ? data : c))
+      );
+
+      setSelectedCultivo(null);
+    } catch (err) {
+      console.error("Error actualizando cultivo:", err);
+    }
   };
 
   return (
     <>
+      {/* 🔥 Header con botón */}
+      <div className="cultivos-header">
+        <button
+          className="btn-add-cultivo"
+          onClick={() => setIsAddOpen(true)}
+        >
+          + Añadir cultivo
+        </button>
+      </div>
 
       <div className="cultivos-content">
         {surcos.map((surco) => (
@@ -55,18 +98,18 @@ export default function CultivosPage() {
               {surco.cultivos.map((cultivo) => (
                 <div
                   key={cultivo.id}
-                  className="cultivo-card-large"
-                  onClick={() => handleEditCultivo(cultivo)}
+                  className={`cultivo-card-large estado-${cultivo.estado?.toLowerCase()}`}
+                  onClick={() => setSelectedCultivo(cultivo)}
                 >
-                  <img src={cultivo.image} alt={cultivo.name} />
+                  <div className="cultivo-placeholder">🌱</div>
 
                   <div className="cultivo-card-content">
                     <span className="badge badge-cultivo">
-                      {cultivo.name}
+                      {cultivo.nombre}
                     </span>
 
                     <span className="badge badge-source">
-                      {cultivo.source}
+                      Estado: {cultivo.estado}
                     </span>
                   </div>
                 </div>
@@ -74,12 +117,27 @@ export default function CultivosPage() {
             </div>
           </section>
         ))}
+
+        {surcos.length === 0 && (
+          <div className="empty-state">
+            <p>No tienes cultivos registrados aún 🌾</p>
+          </div>
+        )}
       </div>
 
+      {/* 🔥 Modal editar */}
       <EditCultivoModal
         isOpen={!!selectedCultivo}
         onClose={() => setSelectedCultivo(null)}
         cultivo={selectedCultivo}
+        onSave={handleUpdateCultivo}
+      />
+
+      {/* 🔥 Modal agregar */}
+      <AddCultivoModal
+        isOpen={isAddOpen}
+        onClose={() => setIsAddOpen(false)}
+        onSave={handleCreateCultivo}
       />
     </>
   );

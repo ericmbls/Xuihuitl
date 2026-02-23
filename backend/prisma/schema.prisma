@@ -7,33 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  admin
-  user
-}
-
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  email     String   @unique
+  email     String    @unique
   password  String
-  role      Role     @default(user)
-  createdAt DateTime @default(now())
-
+  role      Role      @default(user)
+  createdAt DateTime  @default(now())
   cultivos  Cultivo[]
 }
 
 model Cultivo {
-  id          Int      @id @default(autoincrement())
-  nombre      String
-  descripcion String?
-  fechaSiembra DateTime
-  ubicacion   String
+  id              Int      @id @default(autoincrement())
+  nombre          String
+  descripcion     String?
+  fechaSiembra    DateTime
+  ubicacion       String
   frecuenciaRiego Int
-  estado      String
+  estado          String
+  userId          Int
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id])
+}
 
-  userId      Int
-  user        User @relation(fields: [userId], references: [id])
-
-  createdAt   DateTime @default(now())
+enum Role {
+  admin
+  user
 }

@@ -1,4 +1,9 @@
 /* Layout general */
+
+* {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 .dashboard-layout {
   display: flex;
   height: 100vh;
@@ -361,3 +366,72 @@
     grid-template-columns: 1fr;
   }
 }
+
+.kpi-card {
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(139,111,71,0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+}
+
+.kpi-card:hover::after {
+  opacity: 1;
+}
+
+.heatmap-zone {
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.heatmap-zone:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.zone-ok {
+  background: #f3f4f6;
+}
+
+.zone-alert {
+  background: #fde8e8;
+  animation: pulseAlert 2s infinite;
+}
+
+@keyframes pulseAlert {
+  0% { box-shadow: 0 0 0 0 rgba(220,38,38,0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(220,38,38,0); }
+  100% { box-shadow: 0 0 0 0 rgba(220,38,38,0); }
+}
+
+.caudal-chart path:nth-child(2) {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: drawLine 1.8s ease forwards;
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+

@@ -86,3 +86,31 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.estado-activo {
+  border: 2px solid #16a34a;
+}
+
+.estado-pendiente {
+  border: 2px solid #f59e0b;
+}
+
+.estado-inactivo {
+  border: 2px solid #dc2626;
+}
+
+.cultivo-placeholder {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  background: #f8f5ef;
+  border-radius: 12px;
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 40px;
+  color: #6b7280;
+}

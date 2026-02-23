@@ -1,54 +1,47 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import {
   Sprout, AlertCircle, Download, Activity,
   Droplets, CloudSun, CloudRain, Sun
 } from 'lucide-react';
-import Header from '../components/Header';
 import AddCultivoModal from '../components/AddCultivoModal';
 import './DashboardPage.css';
+
+const kpis = [
+  { title: 'Total de cultivos', value: '12', sub: '+2 este mes', icon: <Sprout size={20} />, status: 'neutral' },
+  { title: 'Alertas Activas', value: '3', sub: 'Ver Alertas', icon: <AlertCircle size={20} />, status: 'danger' },
+  { title: 'Estado del Sistema', value: '98%', sub: 'Operativo', icon: <Download size={20} />, status: 'success' },
+  { title: 'Salud Promedio', value: '94%', sub: 'Excelente', icon: <Activity size={20} />, status: 'success' },
+];
+
+const pronostico = [
+  { day: 'Lun', icon: <Sun size={18} color="#F59E0B" />, temp: '24°' },
+  { day: 'Mar', icon: <CloudSun size={18} color="#78716c" />, temp: '22°' },
+  { day: 'Mié', icon: <CloudRain size={18} color="#78716c" />, temp: '20°' },
+  { day: 'Jue', icon: <Sun size={18} color="#F59E0B" />, temp: '23°' },
+  { day: 'Vie', icon: <Sun size={18} color="#F59E0B" />, temp: '25°' },
+];
+
+const zonasCultivo = [
+  { name: 'Tomate', lugar: 'Campo A', humedad: '72%', temp: '24°C', status: 'ok' },
+  { name: 'Lechuga', lugar: 'Hidropónico', humedad: '68%', temp: '22°C', status: 'ok' },
+  { name: 'Pimientos', lugar: 'Invernadero', humedad: '65%', temp: '26°C', status: 'alert' },
+  { name: 'Fresa', lugar: 'Campo B', humedad: '75%', temp: '21°C', status: 'ok' },
+];
+
+const heatmapZones = Array.from({ length: 16 }, (_, i) => ({
+  id: i + 1,
+  status: [6, 12].includes(i + 1) ? 'alert' : 'ok'
+}));
 
 export default function DashboardPage() {
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // 🔹 Memo para evitar recreación innecesaria
-  const kpis = useMemo(() => ([
-    { title: 'Total de cultivos', value: '12', sub: '+2 este mes', icon: <Sprout size={20} />, status: 'neutral' },
-    { title: 'Alertas Activas', value: '3', sub: 'Ver Alertas', icon: <AlertCircle size={20} />, status: 'danger' },
-    { title: 'Estado del Sistema', value: '98%', sub: 'Operativo', icon: <Download size={20} />, status: 'success' },
-    { title: 'Salud Promedio', value: '94%', sub: 'Excelente', icon: <Activity size={20} />, status: 'success' },
-  ]), []);
-
-  const pronostico = useMemo(() => ([
-    { day: 'Lun', icon: <Sun size={18} color="#F59E0B" />, temp: '24°' },
-    { day: 'Mar', icon: <CloudSun size={18} color="#78716c" />, temp: '22°' },
-    { day: 'Mié', icon: <CloudRain size={18} color="#78716c" />, temp: '20°' },
-    { day: 'Jue', icon: <Sun size={18} color="#F59E0B" />, temp: '23°' },
-    { day: 'Vie', icon: <Sun size={18} color="#F59E0B" />, temp: '25°' },
-  ]), []);
-
-  const zonasCultivo = useMemo(() => ([
-    { name: 'Tomate', lugar: 'Campo A', humedad: '72%', temp: '24°C', status: 'ok' },
-    { name: 'Lechuga', lugar: 'Hidropónico', humedad: '68%', temp: '22°C', status: 'ok' },
-    { name: 'Pimientos', lugar: 'Invernadero', humedad: '65%', temp: '26°C', status: 'alert' },
-    { name: 'Fresa', lugar: 'Campo B', humedad: '75%', temp: '21°C', status: 'ok' },
-  ]), []);
-
-  const heatmapZones = useMemo(() =>
-    Array.from({ length: 16 }, (_, i) => ({
-      id: i + 1,
-      status: [6, 12].includes(i + 1) ? 'alert' : 'ok'
-    })), []
-  );
-
   return (
     <>
-      
-
       <div className="dashboard-content">
 
-        {/* KPIs */}
         <section className="kpi-grid">
-          {kpis.map((kpi) => (
+          {kpis.map(kpi => (
             <div key={kpi.title} className={`kpi-card ${kpi.status}`}>
               <div className="kpi-header">
                 <span>{kpi.title}</span>
@@ -60,7 +53,6 @@ export default function DashboardPage() {
           ))}
         </section>
 
-        {/* Heatmap + Forecast */}
         <section className="middle-section">
           <div className="heatmap-card">
             <h3>Mapa de Calor</h3>
@@ -87,7 +79,6 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Zonas */}
         <section className="zones-section">
           {zonasCultivo.map(zona => (
             <div
@@ -121,7 +112,6 @@ export default function DashboardPage() {
           ))}
         </section>
 
-        {/* Chart */}
         <section className="chart-section">
           <div className="chart-header">
             <h3>Caudal Actual</h3>

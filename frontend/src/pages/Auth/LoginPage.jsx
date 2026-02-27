@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../../components/auth/LoginForm';
 import './LoginPage.css';
 
 export default function LoginPage({ setIsLoggedIn }) {

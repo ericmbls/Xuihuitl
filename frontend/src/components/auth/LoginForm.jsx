@@ -97,6 +97,7 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
                 value={formData.name}
                 onChange={handleChange}
                 className="form-input has-icon-left"
+                autoComplete="name"
               />
             </div>
             {errors.name && (
@@ -118,6 +119,7 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
               value={formData.email}
               onChange={handleChange}
               className="form-input has-icon-left"
+              autoComplete="email"
             />
           </div>
           {errors.email && (
@@ -138,6 +140,7 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
               value={formData.password}
               onChange={handleChange}
               className="form-input has-icon-left has-icon-right"
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
             />
             <button
               type="button"

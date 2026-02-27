@@ -1,15 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
-import EditCultivoModal from "../components/EditCultivoModal";
-import AddCultivoModal from "../components/AddCultivoModal";
+import EditCultivoModal from "../../components/cultivo/EditCultivoModal";
+import AddCultivoModal from "../../components/cultivo/AddCultivoModal";
 import "./CultivosPage.css";
-import { getCultivos, createCultivo } from "../services/cultivos.service";
+import { getCultivos, createCultivo } from "../../services/cultivos.service";
 
 export default function CultivosPage() {
   const [cultivos, setCultivos] = useState([]);
   const [selectedCultivo, setSelectedCultivo] = useState(null);
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  // 🔥 Cargar cultivos
   useEffect(() => {
     const loadCultivos = async () => {
       try {
@@ -24,7 +23,6 @@ export default function CultivosPage() {
     loadCultivos();
   }, []);
 
-  // 🔥 Agrupar por ubicación
   const surcos = useMemo(() => {
     const grouped = {};
 
@@ -45,7 +43,6 @@ export default function CultivosPage() {
     }));
   }, [cultivos]);
 
-  // 🔥 Crear cultivo
   const handleCreateCultivo = async (nuevoCultivo) => {
     try {
       const creado = await createCultivo(nuevoCultivo);
@@ -56,7 +53,6 @@ export default function CultivosPage() {
     }
   };
 
-  // 🔥 Actualizar cultivo
   const handleUpdateCultivo = async (id, updatedData) => {
     try {
       const res = await fetch(`http://localhost:3000/cultivos/${id}`, {
@@ -79,7 +75,6 @@ export default function CultivosPage() {
 
   return (
     <>
-      {/* 🔥 Header con botón */}
       <div className="cultivos-header">
         <button
           className="btn-add-cultivo"
@@ -125,7 +120,6 @@ export default function CultivosPage() {
         )}
       </div>
 
-      {/* 🔥 Modal editar */}
       <EditCultivoModal
         isOpen={!!selectedCultivo}
         onClose={() => setSelectedCultivo(null)}
@@ -133,7 +127,6 @@ export default function CultivosPage() {
         onSave={handleUpdateCultivo}
       />
 
-      {/* 🔥 Modal agregar */}
       <AddCultivoModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}

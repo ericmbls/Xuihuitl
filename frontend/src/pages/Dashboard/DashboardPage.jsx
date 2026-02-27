@@ -3,7 +3,7 @@ import {
   Sprout, AlertCircle, Download, Activity,
   Droplets, CloudSun, CloudRain, Sun
 } from 'lucide-react';
-import AddCultivoModal from '../components/AddCultivoModal';
+import AddCultivoModal from '../../components/cultivo/AddCultivoModal';
 import './DashboardPage.css';
 
 const kpis = [

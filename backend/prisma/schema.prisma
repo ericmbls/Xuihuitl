@@ -18,19 +18,26 @@ model User {
 }
 
 model Cultivo {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   nombre          String
-  descripcion     String?
+  descripcion     String?   // opcional
   fechaSiembra    DateTime
   ubicacion       String
   frecuenciaRiego Int
-  estado          String
+  estado          EstadoCultivo @default(activo)
   userId          Int
-  createdAt       DateTime @default(now())
-  user            User     @relation(fields: [userId], references: [id])
+  createdAt       DateTime  @default(now())
+  user            User      @relation(fields: [userId], references: [id])
 }
 
 enum Role {
   admin
   user
+}
+
+enum EstadoCultivo {
+  activo
+  inactivo
+  cosechado
+  perdido
 }

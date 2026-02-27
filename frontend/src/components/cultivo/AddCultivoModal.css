@@ -5,7 +5,8 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); 
+  backdrop-filter: blur(4px);  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,7 +18,6 @@
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
@@ -28,7 +28,6 @@
     transform: translateY(20px);
     opacity: 0;
   }
-
   to {
     transform: translateY(0);
     opacity: 1;
@@ -40,7 +39,6 @@
   border-radius: 20px;
   width: 95%;
   max-width: 900px;
-  /* Más ancho para dos columnas */
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
@@ -51,7 +49,6 @@
   position: relative;
 }
 
-/* El botón de cerrar flota arriba a la derecha fuera del flujo o en la esquina */
 .modal-close-btn {
   position: absolute;
   top: 25px;
@@ -62,6 +59,8 @@
   color: #a0a0a0;
   transition: color 0.2s;
   z-index: 10;
+  padding: 8px;
+  line-height: 1;
 }
 
 .modal-close-btn:hover {
@@ -71,11 +70,9 @@
 .modal-body {
   display: grid;
   grid-template-columns: 300px 1fr;
-  /* Columna Izquierda Fija, Derecha Flexible */
   gap: 40px;
 }
 
-/* COLUMNA IZQUIERDA: IMAGEN */
 .left-column {
   display: flex;
   flex-direction: column;
@@ -85,7 +82,6 @@
   background-color: #f3f4f6;
   border-radius: 16px;
   height: 300px;
-  /* Cuadrado/Rectangular vertical */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -104,6 +100,8 @@
 .upload-icon {
   color: #9ca3af;
   margin-bottom: 12px;
+  width: 48px;
+  height: 48px;
 }
 
 .upload-text {
@@ -112,8 +110,6 @@
   font-weight: 500;
 }
 
-
-/* COLUMNA DERECHA: FORMULARIO */
 .right-column {
   display: flex;
   flex-direction: column;
@@ -122,7 +118,6 @@
 
 h2 {
   font-family: 'Outfit', sans-serif;
-  /* Asumiendo fuente del proyecto */
   font-size: 24px;
   font-weight: 600;
   color: #1f2937;
@@ -138,11 +133,11 @@ h2 {
   font-size: 13px;
   font-weight: 600;
   color: #374151;
-  /* Gris oscuro */
   margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Inputs estilo "Flushed" (Solo línea inferior) */
 .input-flushed {
   border: none;
   border-bottom: 1px solid #e5e7eb;
@@ -151,22 +146,22 @@ h2 {
   color: #111;
   background: transparent;
   transition: border-color 0.2s;
+  width: 100%;
   border-radius: 0;
 }
 
 .input-flushed:focus {
   outline: none;
   border-bottom-color: #8B6F47;
-  /* Color acento marrón */
 }
 
 .input-flushed::placeholder {
   color: #d1d5db;
 }
 
-/* Select custom arrow */
 .select-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .select-wrapper select {
@@ -174,6 +169,17 @@ h2 {
   appearance: none;
   background: transparent;
   cursor: pointer;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 0;
+  font-size: 15px;
+  color: #111;
+  border-radius: 0;
+}
+
+.select-wrapper select:focus {
+  outline: none;
+  border-bottom-color: #8B6F47;
 }
 
 .select-arrow {
@@ -197,10 +203,11 @@ h2 {
   border-radius: 8px;
   padding: 12px;
   font-size: 14px;
-  resize: none;
+  resize: vertical;
   min-height: 100px;
   margin-top: 8px;
   transition: border-color 0.2s;
+  font-family: inherit;
 }
 
 .textarea-bordered:focus {
@@ -208,7 +215,6 @@ h2 {
   border-color: #8B6F47;
 }
 
-/* Footer / Botones */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -217,7 +223,6 @@ h2 {
 
 .btn-save {
   background-color: #8d6e48;
-  /* Marrón del diseño */
   color: white;
   padding: 10px 32px;
   border-radius: 6px;
@@ -232,7 +237,6 @@ h2 {
   background-color: #755938;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .modal-body {
     grid-template-columns: 1fr;
@@ -241,5 +245,19 @@ h2 {
 
   .image-upload-area {
     height: 200px;
+  }
+
+  .modal-content {
+    padding: 30px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .modal-close-btn {
+    top: 15px;
+    right: 15px;
   }
 }

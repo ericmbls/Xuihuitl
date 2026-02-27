@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Globe, Sliders, Shield } from 'lucide-react';
-import Header from '../components/Header';
+import Header from '../../components/common/Header';
 import './AjustesPage.css';
 
 export default function AjustesPage() {

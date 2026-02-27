@@ -1,9 +1,8 @@
 import { LayoutDashboard, Sprout, BarChart3, Users, Settings } from 'lucide-react';
-import logo from '../assets/logo.png';
 import './Sidebar.css';
+import logo from '../../assets/logo.png';
 
 export default function Sidebar({ currentPage, onNavigate, role = 'admin' }) {
-
   const menu = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
     { id: 'cultivos', label: 'Cultivos', icon: <Sprout size={20} /> },

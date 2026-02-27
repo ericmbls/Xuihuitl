@@ -28,7 +28,7 @@ export default function AddCultivoModal({ isOpen, onClose, onSave }) {
       ubicacion: formData.ubicacion || "Sin ubicación",
       fechaSiembra: new Date(formData.fechaSiembra).toISOString(),
       frecuenciaRiego: 2,
-      estado: "activo", 
+      estado: "activo",
       userId: 1,
     };
 
@@ -48,9 +48,12 @@ export default function AddCultivoModal({ isOpen, onClose, onSave }) {
         className="modal-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal-close-btn" onClick={onClose}>
-          <X size={20} />
-        </button>
+        <div className="modal-header">
+          <h2>Nuevo cultivo</h2>
+          <button className="modal-close-btn" onClick={onClose}>
+            <X size={20} />
+          </button>
+        </div>
 
         <div className="modal-body">
           <div className="left-column">
@@ -105,6 +108,7 @@ export default function AddCultivoModal({ isOpen, onClose, onSave }) {
             </div>
 
             <div className="form-group">
+              <label>Descripción</label>
               <textarea
                 className="textarea-bordered"
                 placeholder="Describe el cultivo sembrado"
@@ -116,6 +120,9 @@ export default function AddCultivoModal({ isOpen, onClose, onSave }) {
             </div>
 
             <div className="modal-actions">
+              <button className="btn-cancel" onClick={onClose}>
+                Cancelar
+              </button>
               <button className="btn-save" onClick={handleSave}>
                 Guardar
               </button>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoginPage from './pages/Auth/LoginPage';
 import DashboardPage from './pages/Dashboard/DashboardPage';     
 import CultivosPage from './pages/Cultivos/CultivosPage';
@@ -13,6 +13,16 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [userRole] = useState('admin');
+  const [darkMode, setDarkMode] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const pageConfig = {
     dashboard: { component: DashboardPage, title: 'Dashboard', showButton: false },
@@ -23,7 +33,7 @@ function App() {
   };
 
   if (!isLoggedIn) {
-    return <LoginPage setIsLoggedIn={setIsLoggedIn} />;
+    return <LoginPage setIsLoggedIn={setIsLoggedIn} setToken={setToken} />;
   }
 
   const { component: CurrentPage, title, showButton } = pageConfig[currentPage];
@@ -37,7 +47,7 @@ function App() {
       />
       <main className="main-layout">
         <Header title={title} showButton={showButton} />
-        <CurrentPage />
+        <CurrentPage darkMode={darkMode} setDarkMode={setDarkMode} token={token} />
       </main>
     </div>
   );

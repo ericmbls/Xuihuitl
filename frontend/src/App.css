@@ -13,3 +13,25 @@
     #f3e5ca 100%
   );
 }
+
+body.dark .main-layout {
+  background: linear-gradient(
+    180deg,
+    #1a1a1a 0%,
+    #222 35%,
+    #2e2e2e 100%
+  );
+  color: #f5f5f5;
+}
+
+body.dark .app-layout {
+  background-color: #121212;
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p,
+body.dark span {
+  color: #f5f5f5;
+}

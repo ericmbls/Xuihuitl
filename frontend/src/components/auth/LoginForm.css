@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  /* compact spacing */
 }
 
 .login-header {
@@ -12,14 +11,15 @@
   margin-bottom: 0.6rem;
 }
 
-/* Removed logo styles as logo is removed from header */
-
 .form-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 0.25rem 0;
-  /* Reduced margin */
+}
+
+body.dark .form-title {
+  color: #f5f5f5;
 }
 
 .form-subtitle {
@@ -28,25 +28,30 @@
   margin: 0;
 }
 
+body.dark .form-subtitle {
+  color: #a0a0a0;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  /* Reduced gap */
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  /* Reduced gap */
 }
 
 .form-group label {
   font-size: 0.875rem;
-  /* Slightly smaller font */
   font-weight: 500;
   color: #374151;
+}
+
+body.dark .form-group label {
+  color: #e0e0e0;
 }
 
 .input-wrapper {
@@ -62,6 +67,10 @@
   z-index: 2;
 }
 
+body.dark .input-icon {
+  color: #808080;
+}
+
 .input-icon.left {
   left: 12px;
 }
@@ -69,12 +78,17 @@
 .form-input {
   width: 100%;
   padding: 10px 12px;
-  /* Slightly reduced padding */
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   font-size: 0.95rem;
   transition: all 0.2s;
   background: #f9fafb;
+}
+
+body.dark .form-input {
+  background: #2a2a2a;
+  border-color: #404040;
+  color: #f5f5f5;
 }
 
 .form-input.has-icon-left {
@@ -92,7 +106,12 @@
   box-shadow: 0 8px 22px rgba(139,111,71,0.08);
 }
 
-/* Password Toggle Button */
+body.dark .form-input:focus {
+  background: #333;
+  border-color: #b0895a;
+  box-shadow: 0 8px 22px rgba(176, 137, 90, 0.15);
+}
+
 .password-toggle {
   position: absolute;
   right: 12px;
@@ -112,20 +131,41 @@
   color: #4b5563;
 }
 
+body.dark .password-toggle {
+  color: #808080;
+}
+
+body.dark .password-toggle:hover {
+  color: #b0895a;
+}
+
 .password-hint {
   font-size: 0.75rem;
   color: #6b7280;
   margin: -2px 0 0 0;
 }
 
-/* Error states */
+body.dark .password-hint {
+  color: #a0a0a0;
+}
+
 .form-group.has-error .form-input {
   border-color: #ef4444;
   background-color: #fef2f2;
 }
 
+body.dark .form-group.has-error .form-input {
+  border-color: #f87171;
+  background-color: #2a1a1a;
+}
+
 .form-group.has-error .input-icon {
   color: #ef4444;
+}
+
+body.dark .form-group.has-error .input-icon,
+body.dark .error-message {
+  color: #f87171;
 }
 
 .error-message {
@@ -152,14 +192,30 @@
   color: #4b5563;
 }
 
+body.dark .remember-me {
+  color: #d0d0d0;
+}
+
+body.dark .remember-me input[type="checkbox"] {
+  accent-color: #b0895a;
+}
+
 .forgot-password {
   color: #8B6F47;
   text-decoration: none;
   font-weight: 500;
 }
 
+body.dark .forgot-password {
+  color: #b0895a;
+}
+
 .forgot-password:hover {
   text-decoration: underline;
+}
+
+body.dark .forgot-password:hover {
+  color: #d4a574;
 }
 
 .login-button {
@@ -177,17 +233,19 @@
   box-shadow: 0 10px 26px rgba(139,111,71,0.14);
 }
 
+body.dark .login-button {
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
+}
+
 .login-button:active {
   transform: translateY(1px);
 }
 
-/* Divider */
 .divider {
   display: flex;
   align-items: center;
   text-align: center;
   margin: 8px 0;
-  /* Reduced margin */
   color: #9ca3af;
   font-size: 0.85rem;
 }
@@ -199,11 +257,19 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+body.dark .divider::before,
+body.dark .divider::after {
+  border-color: #404040;
+}
+
+body.dark .divider span {
+  color: #a0a0a0;
+}
+
 .divider span {
   padding: 0 10px;
 }
 
-/* Social Buttons */
 .social-login-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -225,12 +291,22 @@
   transition: all 0.2s;
 }
 
+body.dark .social-btn {
+  background: #2a2a2a;
+  border-color: #404040;
+  color: #f0f0f0;
+}
+
 .social-btn:hover {
   background: #f9fafb;
   border-color: #d1d5db;
 }
 
-/* Responsive adjustment */
+body.dark .social-btn:hover {
+  background: #333;
+  border-color: #b0895a;
+}
+
 @media (max-width: 480px) {
   .social-login-grid {
     grid-template-columns: 1fr;

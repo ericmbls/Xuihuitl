@@ -5,38 +5,44 @@ import { UpdateCultivoDto } from './dto/update-cultivo.dto';
 
 @Injectable()
 export class CultivosService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
+  async findAll() {
     return this.prisma.cultivo.findMany();
   }
 
-  async create(data: CreateCultivoDto) {
-    return this.prisma.cultivo.create({ data });
-  }
+  async findOne(id: number) {
+    const cultivo = await this.prisma.cultivo.findUnique({
+      where: { id },
+    });
 
-  async update(id: number, data: UpdateCultivoDto) {
-    try {
-      return await this.prisma.cultivo.update({
-        where: { id },
-        data,
-      });
-    } catch (error) {
+    if (!cultivo) {
       throw new NotFoundException(`Cultivo con id ${id} no encontrado`);
     }
-  }
 
-  async findOne(id: number) {
-    const cultivo = await this.prisma.cultivo.findUnique({ where: { id } });
-    if (!cultivo) throw new NotFoundException(`Cultivo con id ${id} no encontrado`);
     return cultivo;
   }
 
+  async create(data: CreateCultivoDto) {
+    return this.prisma.cultivo.create({
+      data,
+    });
+  }
+
+  async update(id: number, data: UpdateCultivoDto) {
+    await this.findOne(id); 
+
+    return this.prisma.cultivo.update({
+      where: { id },
+      data,
+    });
+  }
+
   async delete(id: number) {
-    try {
-      return await this.prisma.cultivo.delete({ where: { id } });
-    } catch (error) {
-      throw new NotFoundException(`Cultivo con id ${id} no encontrado`);
-    }
+    await this.findOne(id); 
+
+    return this.prisma.cultivo.delete({
+      where: { id },
+    });
   }
 }

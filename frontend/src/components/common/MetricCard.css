@@ -2,14 +2,13 @@
   background: var(--surface);
   padding: 24px;
   border-radius: 16px;
-  /* Softer radius */
   display: flex;
   align-items: center;
   gap: 20px;
   box-shadow: var(--card-shadow);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.03);
-  /* Subtle border definition */
+  color: var(--text);
 }
 
 .metric-card:hover {
@@ -27,11 +26,8 @@
   justify-content: center;
   color: var(--primary);
   background: var(--surface-hover);
-  /* Assuming this exists, or use a pseudo-element for opacity */
   border-radius: 50%;
-  /* Circle icon background */
   background-color: rgba(0, 0, 0, 0.03);
-  /* Fallback subtle bg overlay */
 }
 
 .metric-icon svg {
@@ -63,7 +59,6 @@
   align-items: baseline;
   gap: 6px;
   font-size: 28px;
-  /* Larger value */
   font-weight: 800;
   color: var(--primary);
   line-height: 1.2;
@@ -76,4 +71,31 @@
   font-weight: 500;
   color: #888;
   margin-left: 2px;
+}
+
+
+body.dark .metric-card {
+  background-color: #2a2a2a;
+  border: 1px solid #555;
+  color: #f5f5f5;
+}
+
+body.dark .metric-title {
+  color: #f5f5f5;
+}
+
+body.dark .metric-subtitle {
+  color: #bbb;
+}
+
+body.dark .metric-value {
+  color: var(--primary);
+}
+
+body.dark .metric-unit {
+  color: #aaa;
+}
+
+body.dark .metric-icon {
+  background-color: rgba(255, 255, 255, 0.05);
 }

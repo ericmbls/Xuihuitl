@@ -12,21 +12,18 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const validate = (values) => {
     const newErrors = {};
-
     if (!values.email) newErrors.email = 'El correo es requerido';
     if (!values.password) newErrors.password = 'La contraseña es requerida';
-    if (mode === 'register' && !values.name)
-      newErrors.name = 'El nombre es requerido';
-
+    if (mode === 'register' && !values.name) newErrors.name = 'El nombre es requerido';
     return newErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData(prev => ({
       ...prev,
       [name]: name === 'email' ? value.trim().toLowerCase() : value,
@@ -38,11 +35,11 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
 
     const validationErrors = validate(formData);
     setErrors(validationErrors);
-
     if (Object.keys(validationErrors).length !== 0) return;
 
-    const endpoint = mode === 'login' ? '/auth/login' : '/auth/register';
+    setLoading(true);
 
+    const endpoint = mode === 'login' ? '/auth/login' : '/auth/register';
     const body =
       mode === 'login'
         ? { email: formData.email, password: formData.password }
@@ -54,19 +51,25 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
           };
 
     try {
-      const res = await fetch(`http://localhost:3000${endpoint}`, {
+      //  
+      const res = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) throw new Error('Error en autenticación');
-
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Error en autenticación');
+      }
+
       localStorage.setItem('authToken', data.access_token);
       onLogin();
     } catch (err) {
       alert(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,9 +87,8 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
       </div>
 
       <form onSubmit={handleSubmit} className="login-form" noValidate>
-
         {mode === 'register' && (
-          <div className={`form-group ${errors.name ? 'has-error' : ''}`}>
+          <div className={`form-group ${errors['name'] ? 'has-error' : ''}`}>
             <label>Nombre</label>
             <div className="input-wrapper">
               <User size={20} className="input-icon left" />
@@ -100,15 +102,15 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
                 autoComplete="name"
               />
             </div>
-            {errors.name && (
+            {errors['name'] && (
               <span className="error-message">
-                <AlertCircle size={14} /> {errors.name}
+                <AlertCircle size={14} /> {errors['name']}
               </span>
             )}
           </div>
         )}
 
-        <div className={`form-group ${errors.email ? 'has-error' : ''}`}>
+        <div className={`form-group ${errors['email'] ? 'has-error' : ''}`}>
           <label>Correo Electrónico</label>
           <div className="input-wrapper">
             <Mail size={20} className="input-icon left" />
@@ -122,14 +124,14 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
               autoComplete="email"
             />
           </div>
-          {errors.email && (
+          {errors['email'] && (
             <span className="error-message">
-              <AlertCircle size={14} /> {errors.email}
+              <AlertCircle size={14} /> {errors['email']}
             </span>
           )}
         </div>
 
-        <div className={`form-group ${errors.password ? 'has-error' : ''}`}>
+        <div className={`form-group ${errors['password'] ? 'has-error' : ''}`}>
           <label>Contraseña</label>
           <div className="input-wrapper">
             <Lock size={20} className="input-icon left" />
@@ -150,9 +152,9 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-          {errors.password && (
+          {errors['password'] && (
             <span className="error-message">
-              <AlertCircle size={14} /> {errors.password}
+              <AlertCircle size={14} /> {errors['password']}
             </span>
           )}
         </div>
@@ -172,10 +174,9 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
           </div>
         )}
 
-        <button type="submit" className="login-button">
-          {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+        <button type="submit" className="login-button" disabled={loading}>
+          {loading ? 'Cargando...' : mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
         </button>
-
       </form>
     </div>
   );

@@ -22,6 +22,7 @@ export class AuthService {
         email: dto.email,
         password: hashedPassword,
         role: Role.user,
+        darkMode: false, // valor inicial
       },
     });
 
@@ -31,7 +32,7 @@ export class AuthService {
     return {
       message: 'Usuario registrado exitosamente',
       access_token: token,
-      user: { id: user.id, email: user.email, role: user.role },
+      user: { id: user.id, email: user.email, role: user.role, darkMode: user.darkMode },
     };
   }
 
@@ -48,7 +49,7 @@ export class AuthService {
     return {
       message: 'Login exitoso',
       access_token: token,
-      user: { id: user.id, email: user.email, role: user.role },
+      user: { id: user.id, email: user.email, role: user.role, darkMode: user.darkMode },
     };
   }
 }

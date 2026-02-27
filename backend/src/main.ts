@@ -7,8 +7,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
+  app.setGlobalPrefix('api'); 
+
   app.enableCors({
-    origin: 'http://localhost:5173', // Vite frontend
+    origin: 'http://localhost:5173', 
     credentials: true,
   });
 

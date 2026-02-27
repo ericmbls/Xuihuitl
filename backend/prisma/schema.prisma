@@ -15,19 +15,23 @@ model User {
   role      Role      @default(user)
   createdAt DateTime  @default(now())
   cultivos  Cultivo[]
+  darkMode  Boolean   @default(false)
+  language  String?   @default("es")
+  farmName  String?
+  location  String?
 }
 
 model Cultivo {
-  id              Int       @id @default(autoincrement())
+  id              Int            @id @default(autoincrement())
   nombre          String
-  descripcion     String?   // opcional
+  descripcion     String?
   fechaSiembra    DateTime
   ubicacion       String
   frecuenciaRiego Int
-  estado          EstadoCultivo @default(activo)
+  estado          EstadoCultivo  @default(activo)
   userId          Int
-  createdAt       DateTime  @default(now())
-  user            User      @relation(fields: [userId], references: [id])
+  createdAt       DateTime       @default(now())
+  user            User           @relation(fields: [userId], references: [id])
 }
 
 enum Role {

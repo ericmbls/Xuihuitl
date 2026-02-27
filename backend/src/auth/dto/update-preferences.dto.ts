@@ -1,5 +1,5 @@
-// src/auth/dto/update-preferences.dto.ts
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class UpdatePreferencesDto {
   @IsOptional()
@@ -16,5 +16,6 @@ export class UpdatePreferencesDto {
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true)
   darkMode?: boolean;
 }

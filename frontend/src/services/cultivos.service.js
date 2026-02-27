@@ -14,3 +14,4 @@ export const createCultivo = async (data) => {
 
   return res.json();
 };
+

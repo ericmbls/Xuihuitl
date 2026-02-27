@@ -10,6 +10,11 @@ import { LoginDto } from './dto/login.dto';
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
+  private generateToken(user: any) {
+    const payload = { sub: user.id, email: user.email, role: user.role };
+    return this.jwtService.sign(payload, { expiresIn: '1h' });
+  }
+
   async register(dto: RegisterDto) {
     const exists = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (exists) throw new ConflictException('El correo ya está registrado');
@@ -26,13 +31,17 @@ export class AuthService {
       },
     });
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
-    const token = this.jwtService.sign(payload, { expiresIn: '1h' });
+    const token = this.generateToken(user);
 
     return {
       message: 'Usuario registrado exitosamente',
       access_token: token,
-      user: { id: user.id, email: user.email, role: user.role, darkMode: user.darkMode },
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        darkMode: user.darkMode,
+      },
     };
   }
 
@@ -43,13 +52,17 @@ export class AuthService {
     const isValid = await bcrypt.compare(dto.password, user.password);
     if (!isValid) throw new UnauthorizedException('Contraseña incorrecta');
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
-    const token = this.jwtService.sign(payload, { expiresIn: '1h' });
+    const token = this.generateToken(user);
 
     return {
       message: 'Login exitoso',
       access_token: token,
-      user: { id: user.id, email: user.email, role: user.role, darkMode: user.darkMode },
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        darkMode: user.darkMode,
+      },
     };
   }
 }

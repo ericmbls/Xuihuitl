@@ -10,13 +10,13 @@ export class UsuariosController {
   @UseGuards(JwtAuthGuard)
   @Patch('preferences')
   async updatePreferences(@Req() req, @Body() dto: UpdatePreferencesDto) {
-    return this.usuariosService.updatePreferences(req.user.id, dto);
+    
+    return this.usuariosService.updatePreferences(Number(req.user.id), dto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('preferences')
   async getPreferences(@Req() req) {
-    // Devolver TODAS las preferencias, no solo darkMode
-    return this.usuariosService.getPreferences(req.user.id);
+    return this.usuariosService.getPreferences(Number(req.user.id));
   }
 }

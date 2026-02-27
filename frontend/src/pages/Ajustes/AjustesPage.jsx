@@ -24,23 +24,19 @@ export default function AjustesPage({ darkMode, setDarkMode, token }) {
   });
 
   useEffect(() => {
+    if (!token) return; // Evita llamadas sin token
     const fetchPreferences = async () => {
       try {
-        console.log('Token usado:', token); // Para depurar
-        const res = await fetch('/usuarios/preferences', { // CAMBIADO
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/usuarios/preferences`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log('Status respuesta:', res.status); // Para depurar
-
         if (!res.ok) {
-          console.error('Error HTTP:', res.status, res.statusText);
+          console.error('Error HTTP al cargar preferencias:', res.status, res.statusText);
           return;
         }
 
         const data = await res.json().catch(() => null);
-        console.log('Datos recibidos:', data); // Para depurar
-        
         if (!data) return;
 
         if (data.darkMode !== undefined) setDarkMode(data.darkMode);
@@ -62,7 +58,7 @@ export default function AjustesPage({ darkMode, setDarkMode, token }) {
     const newValue = !darkMode;
     setDarkMode(newValue);
     try {
-      const res = await fetch('/usuarios/preferences', { // CAMBIADO
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/usuarios/preferences`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -73,6 +69,9 @@ export default function AjustesPage({ darkMode, setDarkMode, token }) {
 
       if (!res.ok) {
         console.error('Error HTTP al guardar preferencia:', res.status, res.statusText);
+      } else {
+        const updated = await res.json();
+        console.log('Preferencia actualizada:', updated);
       }
     } catch (err) {
       console.error('Error guardando preferencia:', err);
@@ -81,9 +80,8 @@ export default function AjustesPage({ darkMode, setDarkMode, token }) {
 
   const handleSave = async () => {
     const payload = { ...settings, darkMode };
-    console.log('Guardar configuración:', payload);
     try {
-      const res = await fetch('/usuarios/preferences', { // CAMBIADO
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/usuarios/preferences`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -95,7 +93,8 @@ export default function AjustesPage({ darkMode, setDarkMode, token }) {
       if (!res.ok) {
         console.error('Error HTTP al guardar configuración:', res.status, res.statusText);
       } else {
-        console.log('Configuración guardada exitosamente');
+        const updated = await res.json();
+        console.log('Configuración guardada exitosamente:', updated);
       }
     } catch (err) {
       console.error('Error guardando configuración:', err);

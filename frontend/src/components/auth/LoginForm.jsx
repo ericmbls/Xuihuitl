@@ -18,13 +18,14 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
     const newErrors = {};
     if (!values.email) newErrors.email = 'El correo es requerido';
     if (!values.password) newErrors.password = 'La contraseña es requerida';
-    if (mode === 'register' && !values.name) newErrors.name = 'El nombre es requerido';
+    if (mode === 'register' && !values.name)
+      newErrors.name = 'El nombre es requerido';
     return newErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: name === 'email' ? value.trim().toLowerCase() : value,
     }));
@@ -51,12 +52,14 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
           };
 
     try {
-      //  
-      const res = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}${endpoint}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        }
+      );
 
       const data = await res.json();
 
@@ -64,7 +67,15 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
         throw new Error(data.message || 'Error en autenticación');
       }
 
-      localStorage.setItem('authToken', data.access_token);
+      // 🔐 Guardar token SOLO cuando es login
+      if (mode === 'login') {
+        if (!data.access_token) {
+          throw new Error('No se recibió token del servidor');
+        }
+
+        localStorage.setItem('token', data.access_token);
+      }
+
       onLogin();
     } catch (err) {
       alert(err.message);
@@ -142,7 +153,9 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
               value={formData.password}
               onChange={handleChange}
               className="form-input has-icon-left has-icon-right"
-              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+              autoComplete={
+                mode === 'login' ? 'current-password' : 'new-password'
+              }
             />
             <button
               type="button"
@@ -175,7 +188,11 @@ export default function LoginForm({ onLogin, mode = 'login' }) {
         )}
 
         <button type="submit" className="login-button" disabled={loading}>
-          {loading ? 'Cargando...' : mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+          {loading
+            ? 'Cargando...'
+            : mode === 'login'
+            ? 'Iniciar Sesión'
+            : 'Crear Cuenta'}
         </button>
       </form>
     </div>
